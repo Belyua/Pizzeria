@@ -1,0 +1,136 @@
+{% load static wagtailcore_tags wagtailuserbar %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns:basket="http://www.w3.org/1999/xhtml">
+
+
+    <head>
+        {% load  static  wagtailsettings_tags %}
+{% get_settings %}
+
+{# Global stylesheets #}
+
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+
+{# Snipcart #}
+
+{% if settings.home.SnipcartSettings.api_key %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://cdn.snipcart.com/scripts/2.0/snipcart.js" id="snipcart" data-api-key="{{ settings.home.SnipcartSettings.api_key }}"></script>
+    <link href="https://cdn.snipcart.com/themes/2.0/base/snipcart.min.css" type="text/css" rel="stylesheet" />
+{% endif %}
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+            {% wagtail_site as current_site %}
+            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {# Force all links in the live preview panel to be opened in a new tab #}
+        {% if request.in_preview_panel %}
+        <base target="_blank">
+        {% endif %}
+
+        {# Global stylesheets #}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/Myshop.css' %}">
+
+        {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+
+
+    </head>
+<body class="nav"><nav>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg main-nav px-0">
+        <a class="navbar-brand" href="static/media/cats.jpg">
+					      <img src="{% static 'static/media/cats.jpg' %}" >
+					    </a>
+
+        <div class="collapse navbar-collapse" id="mainMenu">
+          <ul class="navbar-nav ml-auto text-uppercase f1">
+            <li>
+              <a href="/" class="active active-first">home</a>
+            </li>
+            <li>
+              <a href="#about">about us</a>
+            </li>
+            <li>
+              <a href="#service">services</a>
+            </li>
+            <li>
+              <a href="#project">projects</a>
+            </li>
+            <li>
+              <a href="#team">team</a>
+            </li>
+            <li>
+              <a href="#testimony">testimonils</a>
+            </li>
+            <li>
+              <a type="button" role="button" href="{% url "basket:basket_summary" %}"
+                class="btn btn-outline-secondary">
+                <div id="basket-qty" class="d-inline-flex">1</div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>basket</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <!-- /.container -->
+
+
+    </nav>
+</body>
+
+    <body class="body">
+
+{% wagtailuserbar %}
+
+<div class="container grid-lg">
+
+{% block content %}{% endblock %}
+        <!-- Snipcart summary and View cart button -->
+        <section class="navbar-section snipcart-summary">
+            <div class="input-group input-line">
+                <a href="" class="btn btn-primary snipcart-checkout">
+                    <i class="icon icon-apps"></i>
+                    View cart (<span class="snipcart-total-items">0</span>)
+                </a>
+            </div>
+        </section>
+</div>
+
+    </body>
+
+</html>
+<!--<script>-->
+<!--    $(document).on('click', '#add-button', function (e) {-->
+<!--        e.preventDefault();-->
+<!--        $.ajax({-->
+<!--            type: 'POST',-->
+<!--            url: '{% url "basket:basket_add" %}',-->
+<!--            data: {-->
+<!--                productid: $('#add-button').val(),-->
+<!--                productqty: $('#select option:selected').text(),-->
+<!--                csrfmiddlewaretoken: "{{csrf_token}}",-->
+<!--                action: 'post'-->
+<!--            },-->
+<!--            success: function (json) {-->
+<!--                console.log(json)-->
+<!--               document.getElementById("basket-qty").innerHTML = json.qty-->
+<!--            },-->
+<!--            error: function (xhr, errmsg, err) {}-->
+<!--        });-->
+<!--    })-->
+<!--    </script>-->
+{% endblock %}

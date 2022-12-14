@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load wagtailimages_tags %}
+
+{% block content %}
+<header>
+
+    </header>
+    <div class="container grid-lg">
+        <div class="columns">
+            <div class="column col-4">
+                {% image page.image max-300x300 as temp_image %}
+                <img src="{{ temp_image.url }}" alt="" />
+            </div>
+            <div class="column col-8">
+                <h1>
+                    {{ page.title }}
+                </h1>
+
+                <p>
+                    {{ page.short_description }}
+
+                </p>
+
+            <p>
+                <b>Size:</b>
+                <select name="size" class="form-control">
+                    <option value="1">30</option>
+                    <option value="2">36</option>
+                    <option value="3">40</option>
+                </select>
+            </p>
+<!--                  <p><b>Size:</b>-->
+<!--                    <select name="sizes" class="form-control">-->
+<!--                    {% for res in showsize %}-->
+<!--                        <option value="{{res.id}}">{{res.size}}</option>-->
+<!--                    {% endfor %}-->
+<!--                    </select>-->
+<!--                  </p>-->
+
+                <p>
+                    {% for f in custom_fields %}
+                        {% if f.options_array|length > 0 %}
+                            <div class="form-group">
+                                <label class="form-label" for="{{ f.name|lower }}">
+                                    {{ f.name }}
+
+                                </label>
+                                <select class="form-select custom-field-select" id="{{ f.name|lower }}" data-field="{{ forloop.counter }}">
+                                    {% for opt in f.options_array %}
+                                        <option>
+                                            {{ opt }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="col-6 text-end">
+                <button type="button" class="snipcart-add-item btn btn-primary" value="{{ product.id }}">
+                    <!--
+
+  data-item-name="{{ page.title }}"-->
+<!--                    data-item-id="{{ page.sku }}"-->
+<!--                    data-item-url="{{ page.get_full_url }}"-->
+<!--                    data-item-price="{{ page.price }}"-->
+<!--                    data-item-description="{{ page.short_description}}"-->
+<!--                        data-item-size = "{page.size}"-->
+<!--                    data-item-image="{{ temp_image.url }}"-->
+<!--                    {% for f in custom_fields %}-->
+<!--                        data-item-custom{{forloop.counter}}-name="{{f.name}}"-->
+<!--                        data-item-custom{{forloop.counter}}-options="{{f.options}}"-->
+<!--                    {% endfor %}>-->
+                    <i class="icon icon-plus"></i>
+                    Add to cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(document).on('click', '#add-button', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "basket:basket_add" %}',
+            data: {
+                productid: $('#add-button').val(),
+                productqty: $('#select option:selected').text(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function (json) {
+                console.log(json)
+               document.getElementById("basket-qty").innerHTML = json.qty
+            },
+            error: function (xhr, errmsg, err) {}
+        });
+    })
+</script>{% endblock %}
