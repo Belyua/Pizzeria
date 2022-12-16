@@ -13,8 +13,8 @@ def basket_add(request):
     basket = Basket(request)
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('productid'))
+        product_qty = int(request.POST.get('productqty'))
         product = get_object_or_404(Product, id=product_id)
-        product_qty = product_id = int(request.POST.get('productqty'))
         basket.add(product=product, qty=product_qty)
-        response = JsonResponse({'qty': product_qty})
+        response = JsonResponse({'test': 'data'})
         return response

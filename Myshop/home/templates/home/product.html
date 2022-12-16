@@ -56,25 +56,9 @@
                         {% endif %}
                     {% endfor %}
                 </p>
-                <div class="col-6 text-end">
-                <button type="button" class="snipcart-add-item btn btn-primary" value="{{ product.id }}">
-                    <!--
-
-  data-item-name="{{ page.title }}"-->
-<!--                    data-item-id="{{ page.sku }}"-->
-<!--                    data-item-url="{{ page.get_full_url }}"-->
-<!--                    data-item-price="{{ page.price }}"-->
-<!--                    data-item-description="{{ page.short_description}}"-->
-<!--                        data-item-size = "{page.size}"-->
-<!--                    data-item-image="{{ temp_image.url }}"-->
-<!--                    {% for f in custom_fields %}-->
-<!--                        data-item-custom{{forloop.counter}}-name="{{f.name}}"-->
-<!--                        data-item-custom{{forloop.counter}}-options="{{f.options}}"-->
-<!--                    {% endfor %}>-->
-                    <i class="icon icon-plus"></i>
-                    Add to cart
-                </button>
-            </div>
+          <div class="col-6 text-end">
+              <button type="button" id="add-button" value="{{product.id}}" class="btn btn-secondary btn-sm">Add to
+                  basket</button></div>
         </div>
     </div>
 
@@ -97,4 +81,6 @@
             error: function (xhr, errmsg, err) {}
         });
     })
-</script>{% endblock %}
+</script>
+
+        {% endblock %}
