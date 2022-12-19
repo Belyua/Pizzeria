@@ -20,13 +20,20 @@
                     {{ page.short_description }}
 
                 </p>
-
-            <p>
-                <b>Size:</b>
+<p>
+                <b >size:</b>
                 <select name="size" class="form-control">
                     <option value="1">30</option>
                     <option value="2">36</option>
                     <option value="3">40</option>
+                </select>
+            </p>
+            <p>
+                <b for="select">qty:</b>
+                <select id="select" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
                 </select>
             </p>
 <!--                  <p><b>Size:</b>-->
@@ -55,9 +62,11 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                </p>
+                </p> <h1>
+                    {{ page.price }}$
+                </h1>
           <div class="col-6 text-end">
-              <button type="button" id="add-button" value="{{product.id}}" class="btn btn-secondary btn-sm">Add to
+              <button type="button" id="add-button" value="{{ page.id }}" class="btn btn-secondary btn-sm">Add to
                   basket</button></div>
         </div>
     </div>

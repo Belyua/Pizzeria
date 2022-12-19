@@ -8,22 +8,10 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
-SIZE_CHOICES = (
-    ('30', '30'),
-    ('36', '36'),
-    ('40', '40'),
 
-)
-
-
-class Size(models.Model):
-    size = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.size
-
-    class Meta:
-        db_table = 'sizes'
+class ProductManager(models.Manager):
+    def get_queryset(self):
+        return super(ProductManager, self).get_queryset().filter()
 
 
 class HomePage(Page):
@@ -36,8 +24,6 @@ class HomePage(Page):
 
 
 class Product(Page):
-    size = models.CharField(
-                           choices=SIZE_CHOICES, max_length=50, null=True)
     sku = models.CharField(max_length=255)
     short_description = models.TextField(blank=True, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
@@ -48,12 +34,13 @@ class Product(Page):
         on_delete=models.SET_NULL,
         related_name='+'
     )
+    #quantity = models.IntegerField(null=False)
+    products = ProductManager()
 
     content_panels = Page.content_panels + [
         FieldPanel('sku'),
         FieldPanel('price'),
         ImageChooserPanel('image'),
-        FieldPanel('size'),
         FieldPanel('short_description'),
         InlinePanel('custom_fields', label='Custom fields'),
     ]
@@ -76,8 +63,8 @@ class Product(Page):
 class ProductCustomField(Orderable):
     product = ParentalKey(Product, on_delete=models.CASCADE, related_name='custom_fields')
     name = models.CharField(max_length=255)
-    options = models.CharField(max_length=500, null=True, blank=True, choices=SIZE_CHOICES)
-    size = models.CharField(max_length=10, null=True, choices=SIZE_CHOICES)
+    options = models.CharField(max_length=500, null=True, blank=True)
+    size = models.CharField(max_length=10, null=True)
     panels = [
         FieldPanel('name'),
         FieldPanel('options'),

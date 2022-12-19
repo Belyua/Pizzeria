@@ -1,7 +1,8 @@
-{% extends "../base.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% block title %}Basket Summary{% endblock %}
 {% block content %}
+{% load wagtailimages_tags wagtailcore_tags %}
 
 <main class="pt-5">
   <div class="container">
@@ -10,7 +11,9 @@
     {% with product=item.product %}
     <div data-index="{{product.id}}" class="row mb-4 border product-item">
       <div class="col-md-3 col-lg-2 order-md-first bg-light">
-        <img class="img-fluid mx-auto d-block" width="120px" alt="Responsive image" src="{{ product.image.url }}">
+
+          {% image page.image fill-320x240 %}
+
       </div>
       <div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
         <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-reset">
@@ -19,8 +22,8 @@
         <div class="border">
           <div class="col border-bottom">
             <div class="row p-3">
-              <div class="col-6">Hardback Book</div>
-              <div class="col-6 text-end"><span class="h6 fw-bold">£{{ product.price }}</span></div>
+
+              <div class="col-6 text-end"><span class="h6 fw-bold">${{ product.price }}</span></div>
             </div>
           </div>
           <div class="col">
@@ -53,8 +56,12 @@
     {% endwith %}
     {% endfor %}
     <div class="col-12 text-end">
-      <div class="h6 fw-bold">Sub Total: £<div id="subtotal" class="d-inline-flex">{{basket.get_total_price}}</div></div>
+      <div class="h6 fw-bold">Sub Total: $<div id="subtotal" class="d-inline-flex">{{basket.get_total_price}}</div></div>
     </div>
+     <button type="button"
+                  class="btn btn-outline-secondary btn-sm update-button">
+                  Order
+                </button>
   </div>
 </main>
 
@@ -65,7 +72,7 @@
     var prodid = $(this).data('index');
     $.ajax({
       type: 'POST',
-      url: '{% url "basket:basket_delete" %}',
+
       data: {
         productid: $(this).data('index'),
         csrfmiddlewaretoken: "{{csrf_token}}",
@@ -86,7 +93,7 @@
     var prodid = $(this).data('index');
     $.ajax({
       type: 'POST',
-      url: '{% url "basket:basket_update" %}',
+
       data: {
         productid: $(this).data('index'),
         productqty: $('#select' + prodid + ' option:selected').text(),
