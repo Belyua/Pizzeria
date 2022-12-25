@@ -4,15 +4,6 @@ from .basket import Basket
 from home.models import Product
 import requests
 
-# TELEGRAM_TOKEN = '5900059723:AAE6xTyuzZNrNPxY83oY0TiPwJy5VKYs8Vc'
-# TELEGRAM_CHAT_ID = '-1001812590972'
-# msg = 'hui'
-# URL = (f'https://api.telegram.org/'
-#        f'bot{TELEGRAM_TOKEN}/'
-#        f'sendMessage?'
-#        f'chat_id={TELEGRAM_CHAT_ID}'
-#        f'&text=')
-
 
 def basket_summary(request):
     basket = Basket(request)
