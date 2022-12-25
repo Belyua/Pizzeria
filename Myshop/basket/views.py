@@ -2,16 +2,16 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from .basket import Basket
 from home.models import Product
+import requests
 
-from .models import BasketApi
-
-from rest_framework import viewsets
-from .serializers import ProductSerializer
-
-
-class BasketViewSet(viewsets.ModelViewSet):
-    queryset = BasketApi.objects.all().order_by('id')
-    serializer_class = ProductSerializer
+# TELEGRAM_TOKEN = '5900059723:AAE6xTyuzZNrNPxY83oY0TiPwJy5VKYs8Vc'
+# TELEGRAM_CHAT_ID = '-1001812590972'
+# msg = 'hui'
+# URL = (f'https://api.telegram.org/'
+#        f'bot{TELEGRAM_TOKEN}/'
+#        f'sendMessage?'
+#        f'chat_id={TELEGRAM_CHAT_ID}'
+#        f'&text=')
 
 
 def basket_summary(request):
@@ -54,3 +54,22 @@ def basket_update(request):
         baskettotal = basket.get_total_price()
         response = JsonResponse({'qty': basketqty, 'subtotal': baskettotal})
         return response
+
+
+def send_tg(request):
+    product = Product()
+    basket = Basket(request)
+
+    basket.send_telegram_message()
+    return render(request, 'basket/summary.html')
+
+
+
+#
+#
+# def send_offer_telegram():
+#     message = (
+#         f'price: {Product.price}\n'
+#         f'product: {Product.sku}\n'
+#         )
+#     send_telegram_message(message)

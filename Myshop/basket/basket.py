@@ -1,8 +1,20 @@
 from home.models import Product
 from decimal import Decimal
+import requests
+
+
+TELEGRAM_TOKEN = '5900059723:AAE6xTyuzZNrNPxY83oY0TiPwJy5VKYs8Vc'
+TELEGRAM_CHAT_ID = '-1001812590972'
+msg = 'hui'
+URL = (f'https://api.telegram.org/'
+       f'bot{TELEGRAM_TOKEN}/'
+       f'sendMessage?'
+       f'chat_id={TELEGRAM_CHAT_ID}'
+       f'&text=')
 
 
 class Basket:
+
     def __init__(self, request):
         self.session = request.session
         basket = self.session.get('skey')
@@ -52,3 +64,12 @@ class Basket:
 
     def save(self):
         self.session.modified = True
+
+    def send_telegram_message(self):
+        product = Product()
+
+        result_url = (URL + str(self.get_total_price()) + '$ new order!:\n '
+                            + str(self.__len__()) + ' items\n'
+                            + str(self.basket))
+        requests.get(url=result_url)
+

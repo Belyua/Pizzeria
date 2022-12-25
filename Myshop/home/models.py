@@ -1,12 +1,11 @@
 from django.db import models
 from modelcluster.fields import ParentalKey
 from wagtail.core.models import Page, Orderable
-from wagtail.core.fields import StreamField
-from wagtail.core import blocks
-from wagtail.admin.edit_handlers import FieldPanel,FieldRowPanel, MultiFieldPanel, InlinePanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
-from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+
+from parscart.utils import send_telegram_message
 
 
 class ProductManager(models.Manager):
@@ -58,6 +57,14 @@ class Product(Page):
 
         context['custom_fields'] = fields
         return context
+
+    def send_offer_telegram(self):
+        message = (
+            f'Представьтесь: {self.price}\n'
+            )
+        if self.price:
+            message += f'Сообщение: {self.price}\n'
+        send_telegram_message(message)
 
 
 class ProductCustomField(Orderable):
