@@ -3,9 +3,9 @@ from decimal import Decimal
 import requests
 
 
-TELEGRAM_TOKEN = '5900059723:AAE6xTyuzZNrNPxY83oY0TiPwJy5VKYs8Vc'
-TELEGRAM_CHAT_ID = '-1001812590972'
-msg = 'hui'
+TELEGRAM_TOKEN = 
+TELEGRAM_CHAT_ID = 
+msg = ''
 URL = (f'https://api.telegram.org/'
        f'bot{TELEGRAM_TOKEN}/'
        f'sendMessage?'
